@@ -2502,7 +2502,7 @@ MediumEditor.extensions = {};
                 win = this.base.options.contentWindow,
                 doc = this.base.options.ownerDocument;
 
-            if (targets !== null) {
+            if (targets) {
                 targets = MediumEditor.util.isElement(targets) || [win, doc].indexOf(targets) > -1 ? [targets] : targets;
 
                 Array.prototype.forEach.call(targets, function (target) {
@@ -3922,6 +3922,9 @@ MediumEditor.extensions = {};
                 scheme = '',
                 // telRegex is a regex for checking if the string is a telephone number
                 telRegex = /^\+?\s?\(?(?:\d\s?\-?\)?){3,20}$/,
+                // emailRegex for checking if the string is an email address
+                // https://stackoverflow.com/questions/46155/how-to-validate-email-address-in-javascript
+                emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                 urlParts = value.match(/^(.*?)(?:\?(.*?))?(?:#(.*))?$/),
                 path = urlParts[1],
                 query = urlParts[2],
@@ -3929,6 +3932,8 @@ MediumEditor.extensions = {};
 
             if (telRegex.test(value)) {
                 return 'tel:' + value;
+            } else if (emailRegex.test(value)) {
+                return 'mailto:' + value;
             }
 
             if (!hasScheme) {
@@ -6935,7 +6940,7 @@ MediumEditor.extensions = {};
         for (var i = 0, n = atts.length; i < n; i++) {
             // do not re-create existing attributes
             if (!div.hasAttribute(atts[i].nodeName)) {
-                div.setAttribute(atts[i].nodeName, atts[i].nodeValue);
+                div.setAttribute(atts[i].nodeName, atts[i].value);
             }
         }
 
