@@ -176,7 +176,7 @@
 
         // https://github.com/yabwe/medium-editor/issues/994
         // Firefox thrown an error when calling `formatBlock` on an empty editable blockContainer that's not a <div>
-        if (MediumEditor.util.isMediumEditorElement(node) && node.children.length === 0 && !MediumEditor.util.isBlockContainer(node)) {
+        if (!this.options.lessP && MediumEditor.util.isMediumEditorElement(node) && node.children.length === 0 && !MediumEditor.util.isBlockContainer(node)) {
             this.options.ownerDocument.execCommand('formatBlock', false, 'p');
         }
 
@@ -191,7 +191,7 @@
             // For anchor tags, unlink
             if (tagName === 'a') {
                 this.options.ownerDocument.execCommand('unlink', false, null);
-            } else if (!event.shiftKey && !event.ctrlKey) {
+            } else if (!this.options.lessP && !event.shiftKey && !event.ctrlKey) {
                 this.options.ownerDocument.execCommand('formatBlock', false, 'p');
             }
         }
